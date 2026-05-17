@@ -6,6 +6,7 @@ import { callLlm } from '../../model/llm.js';
 import { formatToolResult } from '../types.js';
 import { getCurrentDate } from '../../agent/prompts.js';
 import { getFilings, get10KFilingItems, get10QFilingItems, get8KFilingItems, getFilingItemTypes, type FilingItemTypes } from './filings.js';
+import { withTimeout, SUB_TOOL_TIMEOUT_MS } from './utils.js';
 
 /**
  * Rich description for the read_filings tool.
@@ -27,7 +28,6 @@ Intelligent meta-tool for reading SEC filing content. Takes a natural language q
 - Stock prices (use get_market_data)
 - Financial statements data in structured format (use get_financials)
 - Company news (use get_financials)
-- Analyst estimates (use get_financials)
 - Non-SEC data (use web_search)
 
 ## Usage Notes
@@ -270,7 +270,7 @@ export function createReadFilings(model: string): DynamicStructuredTool {
             if (!tool) {
               throw new Error(`Tool '${tc.name}' not found`);
             }
-            const rawResult = await tool.invoke(tc.args);
+            const rawResult = await withTimeout(tool.invoke(tc.args), SUB_TOOL_TIMEOUT_MS, tc.name);
             const result = typeof rawResult === 'string' ? rawResult : JSON.stringify(rawResult);
             const parsed = JSON.parse(result);
             return {
