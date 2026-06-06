@@ -5,7 +5,7 @@ import { createWebSearchTool, type WebSearchProvider } from './search/web-search
 import { getSetting } from '../utils/config.js';
 import type { SearchProviderId } from '../utils/env.js';
 import { skillTool, SKILL_TOOL_DESCRIPTION } from './skill.js';
-import { webFetchTool, WEB_FETCH_DESCRIPTION } from './fetch/web-fetch.js';
+import { createWebFetch, WEB_FETCH_DESCRIPTION } from './fetch/web-fetch.js';
 import { browserTool, BROWSER_DESCRIPTION } from './browser/browser.js';
 import { readFileTool, READ_FILE_DESCRIPTION } from './filesystem/read-file.js';
 import { writeFileTool, WRITE_FILE_DESCRIPTION } from './filesystem/write-file.js';
@@ -18,6 +18,7 @@ import { heartbeatTool, HEARTBEAT_TOOL_DESCRIPTION } from './heartbeat/heartbeat
 import { cronTool, CRON_TOOL_DESCRIPTION } from './cron/cron-tool.js';
 import { memoryGetTool, MEMORY_GET_DESCRIPTION, memorySearchTool, MEMORY_SEARCH_DESCRIPTION, memoryUpdateTool, MEMORY_UPDATE_DESCRIPTION } from './memory/index.js';
 import { discoverSkills } from '../skills/index.js';
+import { createSpawnSubagent, SPAWN_SUBAGENT_DESCRIPTION } from './subagent/spawn-subagent.js';
 
 /**
  * A registered tool with its rich description for system prompt injection.
@@ -73,10 +74,17 @@ export function getToolRegistry(model: string): RegisteredTool[] {
       concurrencySafe: true,
     },
     {
+      name: 'spawn_subagent',
+      tool: createSpawnSubagent(model),
+      description: SPAWN_SUBAGENT_DESCRIPTION,
+      compactDescription: 'Delegate a focused sub-task to an isolated subagent. Emit multiple calls in one turn to run independent sub-tasks in parallel.',
+      concurrencySafe: true,
+    },
+    {
       name: 'web_fetch',
-      tool: webFetchTool,
+      tool: createWebFetch(model),
       description: WEB_FETCH_DESCRIPTION,
-      compactDescription: 'Fetch and extract content from a URL as markdown. Use when you need full article text beyond headlines.',
+      compactDescription: 'Fetch a URL and answer a prompt about its content (HTML→markdown, fast-model summarized).',
       concurrencySafe: true,
     },
     {
