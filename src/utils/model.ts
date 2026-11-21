@@ -46,10 +46,6 @@ export function getModelsForProvider(providerId: string): Model[] {
   return provider?.models ?? [];
 }
 
-export function getModelIdsForProvider(providerId: string): string[] {
-  return getModelsForProvider(providerId).map((model) => model.id);
-}
-
 export function getDefaultModelForProvider(providerId: string): string | undefined {
   const models = getModelsForProvider(providerId);
   return models[0]?.id;

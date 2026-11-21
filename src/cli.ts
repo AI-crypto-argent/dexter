@@ -39,14 +39,6 @@ import { editorTheme, theme } from './theme.js';
 import { matchCommands, type SlashCommand } from './commands/index.js';
 import { initSpinner } from './utils/spinner.js';
 
-function truncateForHistory(text: string): string {
-  const lines = text.split('\n');
-  if (lines.length <= 3) return text;
-  const firstLine = lines[0].trim() || lines[1]?.trim() || 'pasted content';
-  const preview = firstLine.length > 60 ? firstLine.slice(0, 60) + '...' : firstLine;
-  return `${preview} [+${lines.length - 1} lines]`;
-}
-
 function truncateAtWord(str: string, maxLength: number): string {
   if (str.length <= maxLength) {
     return str;
@@ -411,7 +403,6 @@ export async function runCli() {
     if (query.toLowerCase() === 'exit' || query.toLowerCase() === 'quit') {
       tui.stop();
       process.exit(0);
-      return;
     }
 
     // Handle all slash commands
