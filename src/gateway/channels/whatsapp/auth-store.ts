@@ -1,4 +1,4 @@
-import { existsSync, statSync, readFileSync, copyFileSync, rmSync } from 'node:fs';
+import { existsSync, statSync, readFileSync, copyFileSync } from 'node:fs';
 import { rm } from 'node:fs/promises';
 import { join } from 'node:path';
 
@@ -8,15 +8,6 @@ export function resolveCredsPath(authDir: string): string {
 
 export function resolveCredsBackupPath(authDir: string): string {
   return join(authDir, 'creds.json.bak');
-}
-
-export function hasCredsSync(authDir: string): boolean {
-  try {
-    const stats = statSync(resolveCredsPath(authDir));
-    return stats.isFile() && stats.size > 1;
-  } catch {
-    return false;
-  }
 }
 
 function readCredsJsonRaw(filePath: string): string | null {

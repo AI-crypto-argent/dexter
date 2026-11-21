@@ -4,7 +4,6 @@ import {
   extractMessageContent,
   type ConnectionState,
   type WAMessage,
-  type proto,
 } from '@whiskeysockets/baileys';
 import { createWaSocket, getStatusCode, isLoggedOutReason, waitForWaConnection } from './session.js';
 import type { WhatsAppCloseReason, WhatsAppInboundMessage } from './types.js';

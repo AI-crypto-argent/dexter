@@ -50,11 +50,3 @@ export function isRecentInboundMessage(key: string): boolean {
   insertionOrder.push(key);
   return false;
 }
-
-/**
- * Clear the deduplication cache (useful for testing).
- */
-export function resetInboundDedupe(): void {
-  cache.clear();
-  insertionOrder.length = 0;
-}
