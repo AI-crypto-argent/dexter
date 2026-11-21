@@ -4,7 +4,6 @@ import { markdownTheme, theme } from '../theme.js';
 
 export class AnswerBoxComponent extends Container {
   private readonly body: Markdown;
-  private value = '';
 
   constructor(initialText = '') {
     super();
@@ -15,7 +14,6 @@ export class AnswerBoxComponent extends Container {
   }
 
   setText(text: string) {
-    this.value = text;
     const rendered = formatResponse(text);
     // Prevent "⏺" from appearing on its own line when model output starts with newlines.
     const normalized = rendered.replace(/^\n+/, '');
